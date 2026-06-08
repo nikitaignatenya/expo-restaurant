@@ -9,9 +9,45 @@ import {
   TextInput,
 } from "react-native";
 import { useRouter } from "expo-router";
+import { useState } from "react";
 const background = require("../../src/assets/background.png");
+import BurgerSVG from "../assets/components/burger";
+import DrinkSVG from "../assets/components/drink";
+import PizzaSVG from "../assets/components/pizza";
+import ChickenBurger from "../assets/components/chickenBurger";
+import DoubleCheesyBurger from "../assets/components/doubleCheesyBurger";
+import ArrowLeft from "../assets/components/arrowLeft";
+import ArrowRight from "../assets/components/arrowRight";
+import { ArrowsPath } from "../assets/helpers/arrowsPath";
 
 export default function MainScreen() {
+  const [categories, setCategories] = useState([
+    {
+      title: "Burgers",
+      img: BurgerSVG,
+    },
+    {
+      title: "Pizza",
+      img: PizzaSVG,
+    },
+    {
+      title: "Drinks",
+      img: DrinkSVG,
+    },
+  ]);
+  const [burgers, setBurgers] = useState([
+    {
+      title: "Chicken Burger",
+      img: ChickenBurger,
+      price: "$3.5",
+    },
+    {
+      title: "Double Cheesy Burger",
+      img: DoubleCheesyBurger,
+      price: "$3",
+    },
+  ]);
+
   const router = useRouter();
   return (
     <>
@@ -37,6 +73,96 @@ export default function MainScreen() {
           >
             Choose the FOOD you LOVE
           </Text>
+          <TextInput
+            placeholder="Search for a food item"
+            style={style.exploreForm}
+          />
+          <Text
+            style={{
+              marginTop: 131,
+              color: "#000000",
+              fontFamily: "roboto-regular",
+              fontSize: 18,
+            }}
+          >
+            Categories
+          </Text>
+          <View
+            style={{
+              flexDirection: "row",
+              width: "100%",
+              justifyContent: "space-between",
+            }}
+          >
+            {categories.map((el, i) => (
+              <View
+                key={i}
+                style={{
+                  paddingHorizontal: 38,
+                  paddingVertical: 19,
+                  boxShadow: "0px 4px 6px -1px #F13A21",
+                  borderRadius: 10,
+                }}
+              >
+                <TouchableOpacity>{<el.img />}</TouchableOpacity>
+                <Text style={{ marginTop: 8 }}>{el.title}</Text>
+              </View>
+            ))}
+          </View>
+          <Text
+            style={{
+              marginTop: 25,
+              fontFamily: "roboto-regular",
+              fontSize: 17,
+            }}
+          >
+            Burgers
+          </Text>
+          <View
+            style={{
+              flexDirection: "row",
+              alignItems: "center",
+              justifyContent: "space-between",
+              width: "100%",
+            }}
+          >
+            <ArrowLeft onPress={() => ArrowsPath.arrowLeft(burgers)} />
+            {burgers.map((el, i) => (
+              <TouchableOpacity
+                key={i}
+                style={{
+                  padding: 10,
+                  borderWidth: 1,
+                  borderColor: "#918B8B",
+                  borderRadius: 10,
+                  height: 165,
+                  width: 120,
+                }}
+              >
+                {<el.img />}
+                <Text
+                  style={{
+                    marginTop: 7,
+                    fontFamily: "roboto-regular",
+                    fontSize: 14,
+                  }}
+                >
+                  {el.title}
+                </Text>
+                <Text
+                  style={{
+                    marginTop: 22,
+                    fontFamily: "roboto-regular",
+                    fontSize: 24,
+                  }}
+                >
+                  {" "}
+                  {el.price}
+                </Text>
+              </TouchableOpacity>
+            ))}
+            <ArrowRight onPress={() => ArrowsPath.arrowRight(burgers)} />
+          </View>
         </View>
       </ImageBackground>
     </>
@@ -44,12 +170,17 @@ export default function MainScreen() {
 }
 
 const style = StyleSheet.create({
-  border: {
-    borderBottomColor: "#918B8B",
-    borderBottomWidth: 1,
-    paddingVertical: 14,
-    marginTop: 26,
-    color: "#766F6F",
+  exploreForm: {
+    marginTop: 21,
+    paddingVertical: 10,
+    paddingHorizontal: 12,
+    width: "100%",
+    backgroundColor: "#F8E0A0E0",
+    borderWidth: 1,
+    borderRadius: 18,
+    borderColor: "#FFFFFF",
+    borderStyle: "solid",
+    color: "#FFFFFF",
     fontFamily: "roboto-regular",
   },
 });
