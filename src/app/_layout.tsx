@@ -1,6 +1,11 @@
 import { Stack } from "expo-router";
+import { useFonts } from "expo-font";
 
 export default function TabsLayout() {
+  const [fontsLoaded] = useFonts({
+    "roboto-regular": require("../assets/fonts/Roboto-Regular.ttf"),
+    "roboto-bold": require("../assets/fonts/Roboto-Bold.ttf"),
+  });
   return (
     <Stack>
       <Stack.Screen
@@ -8,19 +13,9 @@ export default function TabsLayout() {
         options={{ headerShown: false, title: "Main" }}
       />
       <Stack.Screen
-        name="auth"
-        options={{ headerShown: false, title: "Authorization" }}
-      />
-      <Stack.Screen
-        name="login"
-        options={{ headerShown: false, title: "Login" }}
-      />
-      <Stack.Screen
-        name="profile"
-        options={{ headerShown: false, title: "Prifile" }}
+        name="menu"
+        options={{ headerShown: false, title: "Menu" }}
       />
     </Stack>
   );
 }
-
-
