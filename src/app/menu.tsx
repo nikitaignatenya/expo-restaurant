@@ -9,7 +9,7 @@ import {
   TextInput,
 } from "react-native";
 import { useRouter } from "expo-router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 const background = require("../../src/assets/background.png");
 import BurgerSVG from "../assets/components/burger";
 import DrinkSVG from "../assets/components/drink";
@@ -18,7 +18,6 @@ import ChickenBurger from "../assets/components/chickenBurger";
 import DoubleCheesyBurger from "../assets/components/doubleCheesyBurger";
 import ArrowLeft from "../assets/components/arrowLeft";
 import ArrowRight from "../assets/components/arrowRight";
-import { ArrowsPath } from "../assets/helpers/arrowsPath";
 
 export default function MainScreen() {
   const [categories, setCategories] = useState([
@@ -46,9 +45,32 @@ export default function MainScreen() {
       img: DoubleCheesyBurger,
       price: "$3",
     },
+    {
+      title: "1",
+      img: DoubleCheesyBurger,
+      price: "$3",
+    },
+    {
+      title: "2",
+      img: DoubleCheesyBurger,
+      price: "$3",
+    },
+    {
+      title: "3",
+      img: DoubleCheesyBurger,
+      price: "$3",
+    },
   ]);
+  const [counterStart, setCounterStart] = useState(0);
+  const [counterEnd, setCounterEnd] = useState(1);
+  const [currentBurgers, setCurrentBurgers] = useState([
+    burgers[counterStart],
+    burgers[counterEnd],
+  ]);
+  useEffect(() => {
+    setCurrentBurgers([burgers[counterStart], burgers[counterEnd]]);
+  }, [counterStart, counterEnd]);
 
-  const router = useRouter();
   return (
     <>
       <ImageBackground
@@ -126,8 +148,18 @@ export default function MainScreen() {
               width: "100%",
             }}
           >
-            <ArrowLeft onPress={() => ArrowsPath.arrowLeft(burgers)} />
-            {burgers.map((el, i) => (
+            <ArrowLeft
+              onPress={() => {
+                counterEnd == 0
+                  ? setCounterEnd(burgers.length - 1)
+                  : setCounterEnd(counterEnd - 1);
+
+                counterStart == 0
+                  ? setCounterStart(burgers.length - 1)
+                  : setCounterStart(counterStart - 1);
+              }}
+            />
+            {currentBurgers.map((el, i) => (
               <TouchableOpacity
                 key={i}
                 style={{
@@ -156,12 +188,21 @@ export default function MainScreen() {
                     fontSize: 24,
                   }}
                 >
-                  {" "}
                   {el.price}
                 </Text>
               </TouchableOpacity>
             ))}
-            <ArrowRight onPress={() => ArrowsPath.arrowRight(burgers)} />
+            <ArrowRight
+              onPress={() => {
+                counterStart == burgers.length - 1
+                  ? setCounterStart(0)
+                  : setCounterStart(counterStart + 1);
+
+                counterEnd == burgers.length - 1
+                  ? setCounterEnd(0)
+                  : setCounterEnd(counterEnd + 1);
+              }}
+            />
           </View>
         </View>
       </ImageBackground>
